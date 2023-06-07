@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config()
+require("dotenv").config();
 
 const contactsRouter = require("./routes/api/contacts");
 
@@ -15,7 +15,8 @@ app.use((req, res) => {
   res.status(404).json({ message: "not found" });
 });
 
-app.use((err, req, res, next) => {
+app.use((err, _, res) => {
+  // eslint-disable-next-line prefer-const
   let { status = 500, message = "Server error" } = err;
   if (status === 500) {
     message = "Server error";
