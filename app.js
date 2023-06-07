@@ -1,11 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const contactsRouter = require("./routes/api/contacts");
+require("dotenv").config()
 
+const contactsRouter = require("./routes/api/contacts");
 
 const app = express();
 app.use(cors());
-// check content-type of body request, if application/json and make object from string  
+// check content-type of body request, if application/json and make object from string
 app.use(express.json());
 
 app.use("/api/contacts", contactsRouter);
