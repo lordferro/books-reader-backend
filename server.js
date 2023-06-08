@@ -10,7 +10,6 @@ mongoose
   .then(() => {
     app.listen(PORT);
   })
-  .catch((error) => {
-    console.log(error.message);
+  .catch(() => {
     process.exit(1);
   });
