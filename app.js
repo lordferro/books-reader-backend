@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+const authRouter = require("./routes/api/auth");
 const contactsRouter = require("./routes/api/contacts");
 
 const app = express();
@@ -10,6 +11,7 @@ app.use(cors());
 // check content-type of body request, if application/json and make object from string
 app.use(express.json());
 
+app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 
 app.use((req, res) => {
