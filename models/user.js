@@ -20,12 +20,18 @@ const userSchema = new Schema(
       type: String,
       match: emailRegexp,
       required: true,
+      // in MongoDB Compass, tab Indexes, check if that field added after first registration
       unique: true,
+    },
+    token: {
+      type: String,
+      default: "",
     },
   },
   { versionKey: false, timestamps: true }
 );
 
+// middelware for throw an error if validation failed
 userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({

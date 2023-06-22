@@ -29,7 +29,6 @@ module.exports = {
     "guard-for-in": "off",
     "global-require": "off",
     "implicit-arrow-linebreak": "off",
-    "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     indent: ["warn", 2, { SwitchCase: 1 }],
     "linebreak-style": "off",
     "max-classes-per-file": "off",

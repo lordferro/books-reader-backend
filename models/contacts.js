@@ -30,7 +30,14 @@ const contactSchema = new Schema(
     },
     birthDate: {
       type: String,
+      // DD-MM-YYYY
       match: dateRegexp,
+      required: true,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      // id of which collection?
+      ref: "user",
       required: true,
     },
   },
