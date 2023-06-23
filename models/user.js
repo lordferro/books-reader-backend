@@ -31,7 +31,7 @@ const userSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// middelware for throw an error if validation failed
+// middelware for throw an error if validation failed, because mongoose doesn't give an error code
 userSchema.post("save", handleMongooseError);
 
 const registerSchema = Joi.object({

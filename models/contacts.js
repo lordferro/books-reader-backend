@@ -44,7 +44,7 @@ const contactSchema = new Schema(
   { versionKey: false, timestamps: true }
 );
 
-// start this middleware in case error during post new document
+// start this middleware in case error during post new document, because mongoose doesn't give an error code
 contactSchema.post("save", handleMongooseError);
 
 const Contact = model("contact", contactSchema);
