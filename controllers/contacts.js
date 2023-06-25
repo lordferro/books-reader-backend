@@ -5,16 +5,26 @@ const { HttpError, ctrlWrapper } = require("../helpers");
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = 10 } = req.query;
+
   const skip = (page - 1) * limit;
-  const result = await Contact.find(
-    { owner },
-    "-createdAt -updatedAt",
-    { skip, limit }
+
+  const query = { owner, ...req.query };
+
+  const data = await Contact.find(query)
+    .skip(skip)
+    .limit(limit)
     // go to owner field, take id, and put in the field owner user with that id
-  ).populate("owner", " name email");
+    .populate("owner", "email");
+
   // find all doc with favorite = true, and show without favorite field
-  // const result = await Contact.find({ favorite: true }, " -favorite");
-  res.json(result);
+  // const data = await Contact.find({ favorite: true }, " -favorite");
+
+  const total = await Contact.count(query);
+
+  if (!data) {
+    throw HttpError(404, "not found");
+  }
+  res.json({ data, total });
 };
 
 const add = async (req, res) => {
