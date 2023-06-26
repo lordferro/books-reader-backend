@@ -10,6 +10,8 @@ const app = express();
 app.use(cors());
 // check content-type of body request, if application/json and make object from string
 app.use(express.json());
+// if get request for files, go to public folder
+app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
