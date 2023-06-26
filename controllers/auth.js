@@ -75,7 +75,7 @@ const updateAvatar = async (req, res) => {
   await fs.rename(tempUpload, resultUpload);
 
   // we make URL consider that all requests for files redirecting to folder public
-  const avatarURL = path.join("avatars", originalname);
+  const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
 
   res.json({ avatarURL });

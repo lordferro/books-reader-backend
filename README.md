@@ -19,7 +19,6 @@ https://contactsdb-1lj9.onrender.com/api/contacts
 
 **upload file**
 
-
 set middleware express.static - to set folder where get request can find files.
 
 create middleware upload(it saves file in tempDir):
