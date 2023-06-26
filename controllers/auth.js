@@ -64,7 +64,7 @@ const logout = async (req, res) => {
   res.json({ message: "Logout success" });
 };
 
-const updateAvatar = async (req, res, next) => {
+const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
 
