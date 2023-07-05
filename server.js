@@ -8,8 +8,10 @@ mongoose.set("strictQuery", true);
 mongoose
   .connect(DB_HOST)
   .then(() => {
-    app.listen(PORT);
+    console.log("DB connected");
   })
   .catch(() => {
     process.exit(1);
   });
+
+module.exports = app.listen(PORT);
