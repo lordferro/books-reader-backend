@@ -1,11 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 
 const authRouter = require("./routes/api/auth");
 const contactsRouter = require("./routes/api/contacts");
+const viewsRouter = require("./routes/views");
 
 const app = express();
+
+// use temple engine pug
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 app.use(cors());
 // check content-type of body request, if application/json and make object from string
@@ -15,6 +21,7 @@ app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/", viewsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "not found" });

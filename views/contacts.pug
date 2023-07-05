@@ -1,0 +1,15 @@
+extends layouts/main
+
+block content
+    h1 Contacts list
+        .contacts 
+            each contact in contacts 
+             .contact 
+                .owner 
+                    figure.owner__pic
+                        img(src=contact.owner.avatarURL)
+                    p.owner__name= contact.owner.name
+                .contact__content 
+                    h3.h3= contact.email
+                    p.mobile= contact.phone
+                    p.birthDate= contact.birthDate.toLocaleString('uk-UA')

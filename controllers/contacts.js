@@ -14,17 +14,18 @@ const getAll = async (req, res) => {
     .skip(skip)
     .limit(limit)
     // go to owner field, take id, and put in the field owner user with that id
-    .populate("owner", "email");
+    .populate("owner");
 
   // find all doc with favorite = true, and show without favorite field
   // const data = await Contact.find({ favorite: true }, " -favorite");
 
-  const total = await Contact.count(query);
+  // const total = await Contact.count(query);
 
   if (!data) {
     throw HttpError(404, "not found");
   }
-  res.json({ data, total });
+  // res.json({ data, total });
+  res.json({ data });
 };
 
 const add = async (req, res) => {

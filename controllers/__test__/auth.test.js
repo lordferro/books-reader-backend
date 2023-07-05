@@ -5,7 +5,6 @@ const app = require("../../server");
 describe("POST /api/auth/login", () => {
   beforeAll(() => {
     console.log("before all");
-    console.log(app);
   });
 
   it("should return unauth", async () => {
