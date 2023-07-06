@@ -4,129 +4,114 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
 }
 
-html {
-  font-size: 90%;
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f0f0f0;
+  box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.1), -8px -8px 24px rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
 }
 
 .header {
-  width: 80rem;
-  margin: 0 auto;
-  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.header__logo {
+  font-size: 2rem;
+  color: #333;
 }
 
 .header__nav {
-  padding: 2rem;
-  background-color: cornsilk;
-}
-
-.header__item-list {
   display: flex;
-  flex-direction: row;
-  list-style-type: none;
 }
 
 .header__item {
-  display: block;
-  margin: 0 4rem;
+  margin-left: 1rem;
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
+  color: #333;
+  cursor: pointer;
 }
 
-a.active {
+.header__item:hover {
   color: orangered;
 }
 
 .main {
-  width: 80rem;
-  margin: 0 auto;
-  height: auto;
   flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 h1 {
   text-align: center;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   text-transform: uppercase;
   font-size: 3rem;
+  color: #333;
 }
 
-p {
-  padding: 3rem;
-  font-size: 1.3rem;
-  text-align: center;
+.card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  grid-gap: 2rem;
 }
 
-.footer {
-  width: 80rem;
-  margin: 20px auto;
-}
-
-.footer__info {
-  background-color: azure;
-  padding: 1rem;
+.card {
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  box-shadow: 8px 8px 24px rgba(0, 0, 0, 0.1), -8px -8px 24px rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
+  padding: 2rem;
 }
 
-.contact {
-  border: 2px dashed white;
-  background-color: lightgrey;
-  padding: 10px;
+.card__img {
+  height: 8rem;
+  width: 8rem;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.1), -4px -4px 12px rgba(255, 255, 255, 0.5);
   display: flex;
-}
-
-.contact:not(:last-child) {
+  justify-content: center;
+  align-items: center;
   margin-bottom: 2rem;
 }
 
-.contact__content {
-  flex-grow: 1;
-}
-
-.h3 {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-top: 2rem;
-  color: blue;
-}
-
-.mobile {
-  padding: 0;
-}
-
-.birthDate {
-  font-size: 1rem;
-  padding: 0;
-  color: lightslategray;
-}
-
-.owner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-left: 5rem;
-}
-
-.owner__name {
-  color: palevioletred;
-  font-size: 1.4rem;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-
-.owner__pic {
-  height: 4rem;
-  width: 4rem;
-  margin: 0;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.owner__pic img {
+.card__img img {
   height: 100%;
   width: 100%;
   object-fit: cover;
+  border-radius: 50%;
+}
+
+.card__name {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.card__email {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.card__phone {
+  font-size: 1rem;
+  color: #666;
+  text-align: center;
 }
