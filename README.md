@@ -1,4 +1,4 @@
-MongoDB conected using mongoose, deployed to render.com
+MongoDB conected using mongoose, deployed to render.com. Server serves template, created using Pug, in static folder.
 
 https://contactsdb-1lj9.onrender.com/api/contacts
 
