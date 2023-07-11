@@ -16,7 +16,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(cors());
 // check content-type of body request, if application/json and make object from string
 app.use(express.json());
-// if get request for files, go to public folder
+// if get request for files to root path of server, go to public folder
 app.use(express.static("public"));
 
 app.use("/api/auth", authRouter);

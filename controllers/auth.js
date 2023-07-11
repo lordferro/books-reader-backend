@@ -4,6 +4,7 @@ const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
 const { nanoid } = require("nanoid");
+const crypto = require("crypto");
 const { ctrlWrapper, HttpError, sendEmail } = require("../helpers");
 const { User } = require("../models/user");
 
@@ -44,6 +45,69 @@ const register = async (req, res) => {
   });
 };
 
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) throw HttpError(401, "Email not found");
+
+  // one time password
+  const otp = user.creatPasswordResetToken();
+
+  await user.save();
+
+  try {
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/auth/set-new-password/${otp}`;
+
+    console.log(resetUrl);
+  } catch (error) {
+    console.log(error);
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+
+    await user.save();
+  }
+
+  const restorePasswordEmail = {
+    to: email,
+    subject: "Verify email",
+    html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationCode}">Click to verify email</a>`,
+  };
+
+  await sendEmail(restorePasswordEmail);
+
+  res
+    .status(200)
+    .json({ message: "Password reset instructions sent to email." });
+};
+
+const resetPassword = async (req, res) => {
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.otp)
+    .digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+
+  if (!user) throw HttpError(400, "Token is invalid");
+
+  const hashPassword = await bcrypt.hash(req.body.password, 10);
+
+  user.password = hashPassword;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+
+  await user.save();
+
+  user.password = undefined;
+
+  res.status(200).json({ user });
+};
+
 const verifyEmail = async (req, res) => {
   const { verificationCode } = req.params;
   const user = await User.findOne({ verificationCode });
@@ -54,7 +118,7 @@ const verifyEmail = async (req, res) => {
     verificationCode: "",
   });
 
-  res.json({ message: "email verification succed" });
+  res.json({ message: "email verification succeed" });
 };
 
 const resendVerifyEmail = async (req, res) => {
@@ -82,7 +146,8 @@ const login = async (req, res) => {
 
   if (!user.verify) throw HttpError(401, "Email is not verified");
 
-  const passwordCompare = bcrypt.compare(password, user.password);
+  const passwordCompare = await bcrypt.compare(password, user.password);
+
   if (!passwordCompare) throw HttpError(401, "Email or password invalid");
 
   const payload = {
@@ -127,10 +192,12 @@ const updateAvatar = async (req, res) => {
 
 module.exports = {
   register: ctrlWrapper(register),
+  forgotPassword: ctrlWrapper(forgotPassword),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   updateAvatar: ctrlWrapper(updateAvatar),
   verifyEmail: ctrlWrapper(verifyEmail),
   resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
+  resetPassword: ctrlWrapper(resetPassword),
 };

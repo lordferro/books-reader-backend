@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
+const crypto = require("crypto");
 const { handleMongooseError } = require("../helpers");
 
 // eslint-disable-next-line no-useless-escape
@@ -39,6 +40,8 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    passwordResetToken: { type: String },
+    passwordResetExpires: { type: Date },
   },
   { versionKey: false, timestamps: true }
 );
@@ -57,6 +60,10 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required(),
 });
 
+const resetPassword = Joi.object({
+  password: Joi.string().min(6).required(),
+});
+
 const emailSchema = Joi.object({
   email: Joi.string().pattern(emailRegexp).required(),
 });
@@ -64,7 +71,22 @@ const emailSchema = Joi.object({
 const schemas = {
   registerSchema,
   loginSchema,
-  emailSchema
+  emailSchema,
+  resetPassword,
+};
+
+// custom method
+userSchema.methods.creatPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 100;
+
+  return resetToken;
 };
 
 const User = model("user", userSchema);
