@@ -7,6 +7,7 @@ const { nanoid } = require("nanoid");
 const crypto = require("crypto");
 const { ctrlWrapper, HttpError, sendEmail } = require("../helpers");
 const { User } = require("../models/user");
+const Email = require("../services/emailService");
 
 const { SECRET_KEY, BASE_URL } = process.env;
 
@@ -31,13 +32,22 @@ const register = async (req, res) => {
     verificationCode,
   });
 
-  const verifyEmail = {
-    to: email,
-    subject: "Verify email",
-    html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationCode}">Click to verify email</a>`,
-  };
+  // const verifyEmail = {
+  //   to: email,
+  //   subject: "Verify email",
+  //   html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationCode}">Click to verify email</a>`,
+  // };
 
-  await sendEmail(verifyEmail);
+  // await sendEmail(verifyEmail);
+  try {
+    const verifyUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/auth/verify/${verificationCode}`;
+
+    await new Email(newUser, verifyUrl).sendHello();
+  } catch (error) {
+    console.log(error);
+  }
 
   res.status(201).json({
     email: newUser.email,
@@ -60,7 +70,7 @@ const forgotPassword = async (req, res) => {
       "host"
     )}/api/auth/set-new-password/${otp}`;
 
-    console.log(resetUrl);
+    await new Email(user, resetUrl).sendRestorePassword();
   } catch (error) {
     console.log(error);
     user.passwordResetToken = undefined;
@@ -68,14 +78,6 @@ const forgotPassword = async (req, res) => {
 
     await user.save();
   }
-
-  const restorePasswordEmail = {
-    to: email,
-    subject: "Verify email",
-    html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationCode}">Click to verify email</a>`,
-  };
-
-  await sendEmail(restorePasswordEmail);
 
   res
     .status(200)
