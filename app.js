@@ -23,6 +23,12 @@ app.use("/api/auth", authRouter);
 app.use("/api/contacts", contactsRouter);
 app.use("/", viewsRouter);
 
+app.get("/api/v1/ping", (req, res) => {
+  res.status(200).json({
+    msg: "pong!",
+  });
+});
+
 app.use((req, res) => {
   res.status(404).json({ message: "not found" });
 });

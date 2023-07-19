@@ -34,3 +34,4 @@ create controller:
 -resultUpload = where to save + newfilename.
 -fs.rename move to avatars folder.
 write to db avatarURL
+
